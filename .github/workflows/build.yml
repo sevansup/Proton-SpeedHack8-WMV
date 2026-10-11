@@ -1,0 +1,51 @@
+name: Package SpeedHack 8 with WMV codecs
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/**', 'licenses/**', 'CODEC-SOURCES.md', '.github/workflows/build.yml']
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  package:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      SDK: registry.gitlab.steamos.cloud/proton/sniper/sdk:0.20230905.59202-0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and verify pinned releases and public test video
+        run: bash scripts/download.sh
+      - name: Add codecs and audit unchanged Wine runtime
+        run: python3 scripts/assemble.py
+      - name: Test both media architectures and speed switching
+        run: |
+          docker pull "$SDK"
+          docker run --rm --user "$(id -u):$(id -g)" --env HOME=/tmp --env CCACHE_DISABLE=1 \
+            --volume "$GITHUB_WORKSPACE:/work" --workdir /work "$SDK" \
+            bash scripts/test.sh 2>&1 | tee output/tests.log
+      - name: Create installable ZIP
+        run: bash scripts/package.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Proton-SpeedHack8-WMV-download
+          path: |
+            output/Proton-SpeedHack8-WMV.zip
+            output/Proton-SpeedHack8-WMV.zip.sha256
+            output/changed-files.json
+            output/tests.log
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-logs
+          path: |
+            output/changed-files.json
+            output/tests.log
+          retention-days: 7
