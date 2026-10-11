@@ -5,8 +5,7 @@ dist="$project/output/Proton-SpeedHack8-WMV/dist"
 export CCACHE_DISABLE=1
 for bits in 64 32; do
   if [[ "$bits" == 64 ]]; then host=x86_64-linux-gnu; pkg_host=x86_64-linux-gnu; lib=lib64; else host=i686-linux-gnu; pkg_host=i386-linux-gnu; lib=lib; fi
-  flags=$(PKG_CONFIG_LIBDIR="/usr/lib/$pkg_host/pkgconfig:/usr/share/pkgconfig" "$host-pkg-config" --cflags --libs gstreamer-1.0)
-  "$host-gcc" -O2 scripts/test-media.c -L"$dist/$lib" -Wl,-rpath-link,"$dist/$lib" $flags -o "work/test-media$bits"
+  "$host-gcc" -O2 scripts/test-media.c -L"$dist/$lib" -Wl,-rpath-link,"$dist/$lib" -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -o "work/test-media$bits"
   LD_LIBRARY_PATH="$dist/$lib" GST_PLUGIN_SYSTEM_PATH_1_0="$dist/$lib/gstreamer-1.0" \
     GST_PLUGIN_PATH_1_0= GST_REGISTRY_FORK=no GST_REGISTRY="$project/work/registry$bits.bin" \
     "work/test-media$bits" "$project/work/test.wmv"
