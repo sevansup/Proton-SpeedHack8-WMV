@@ -1,0 +1,44 @@
+name: Publish verified WMV release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release.yml']
+permissions:
+  actions: read
+  contents: write
+concurrency:
+  group: release-v1.0.0
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the already validated build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38171535880
+          name: Proton-SpeedHack8-WMV-download
+          path: release-assets
+      - name: Verify the installable ZIP
+        working-directory: release-assets
+        run: |
+          sha256sum -c Proton-SpeedHack8-WMV.zip.sha256
+          test "$(sha256sum Proton-SpeedHack8-WMV.zip | cut -d ' ' -f 1)" = 2818a5721a20fe455f09afa34718248467998670ca2c069a9646dd0e06f69b5a
+          unzip -tq Proton-SpeedHack8-WMV.zip
+      - name: Publish v1.0.0 with the tested assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create v1.0.0 \
+            --target f1f83c4a37c5561819e9d30eae8aa9cdb3e4ef45 \
+            --title 'Proton-SpeedHack8-WMV v1.0.0' \
+            --notes-file .github/releases/v1.0.0.md \
+            release-assets/Proton-SpeedHack8-WMV.zip \
+            release-assets/Proton-SpeedHack8-WMV.zip.sha256 \
+            release-assets/changed-files.json \
+            release-assets/tests.log
