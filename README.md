@@ -1,6 +1,8 @@
 # Proton-SpeedHack8-WMV
 
-**A custom Proton compatibility tool for Steam Deck that lets you toggle faster game speed with a button press, with added support for WMV video cutscenes.** You can use it to speed up gameplay and supported cutscenes, then switch back to normal speed.
+**A custom Proton compatibility tool for Steam Deck that lets you speed up gameplay by holding a button or toggling acceleration on and off, with added support for WMV video playback.**
+
+The WMV additions fix video playback. In my testing, the prerendered WMV cutscenes appear to play at normal speed even while the speedhack is active.
 
 This is based on **[Proton SpeedHack by LtSquigs](https://github.com/LtSquigs/Proton-SpeedHack)**, which provides the speedhack functionality. I used its **8.0-5** release as the base and added WMV playback components from **[GE-Proton8-16 by GloriousEggroll](https://github.com/GloriousEggroll/proton-ge-custom/releases/tag/GE-Proton8-16)**. Full credit to those projects for the original work.
 
@@ -15,15 +17,27 @@ It may also help other games with WMV playback issues, such as **Nights of Azure
 1. Download **Proton-SpeedHack8-WMV.zip** from the release assets.
 2. In Steam Deck Desktop Mode, extract it into `~/.steam/root/compatibilitytools.d/`.
 3. Restart Steam and select **Proton-SpeedHack8-WMV** under the game's Properties → Compatibility settings.
-4. When trying another game, check its cutscenes at normal speed first, then toggle acceleration.
+4. When trying another game, check its cutscenes at normal speed first, then try gameplay acceleration.
 
-Launch options for a Page Up toggle at 3×:
+## Speed and controls
+
+The examples below use **2× gameplay speed**. Change `SPEEDHACK_SPEED=2` to choose another multiplier.
+
+Map a Steam Input button to **Page Up**, then choose either control mode:
+
+**Hold to speed up** — hold the button for 2× speed; release it to return to normal:
 
 ```text
-SPEEDHACK_SPEED=3 SPEEDHACK_TOGGLE=1 SPEEDHACK_KEYS=page_up %command%
+SPEEDHACK_SPEED=2 SPEEDHACK_TOGGLE=0 SPEEDHACK_KEYS=page_up %command%
 ```
 
-Map a Steam Input button to Page Up. The original SpeedHack configuration behavior is retained. Audio time stretching is not added.
+**Toggle on/off** — press once for 2× speed; press again to return to normal:
+
+```text
+SPEEDHACK_SPEED=2 SPEEDHACK_TOGGLE=1 SPEEDHACK_KEYS=page_up %command%
+```
+
+`SPEEDHACK_TOGGLE=0` selects hold mode; `SPEEDHACK_TOGGLE=1` selects toggle mode. Audio time stretching is not added, and WMV playback support does not mean the videos themselves will speed up.
 
 ## What changes
 
