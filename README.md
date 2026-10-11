@@ -2,6 +2,8 @@
 
 Experimental WMV playback additions for the official **Proton-SpeedHack 8.0-5** release, using codec binaries from **GE-Proton8-16**. Designed for testing Fatal Frame: Maiden of Black Water. No local Linux or Docker setup is needed; GitHub Actions creates the installable ZIP.
 
+**Validation:** 32-bit and 64-bit WMV3/WMA decoding and speed-switching tests passed in [this workflow run](https://github.com/sevansup/Proton-SpeedHack8-WMV/actions/runs/38171535880). In-game Steam Deck testing is still required.
+
 ## Scope
 
 All original Wine binaries, speedhack code, DXVK, VKD3D, and existing GStreamer plugins remain byte-identical. The additions are four FFmpeg libraries (avcodec, avformat, avfilter, avutil) and GStreamer's ASF demuxer, for both architectures, including runtime soname links. SpeedHack and GE pin the same FFmpeg and GStreamer source revisions. The launcher changes one library-path operation to prefer bundled codecs over Steam's supplied FFmpeg libraries. The Steam display name is distinct.
