@@ -1,10 +1,12 @@
 # Proton-SpeedHack8-WMV
 
-**Proton SpeedHack 8.0-5 with added WMV video playback support**, using codec libraries from **GE-Proton8-16**. It combines the original toggleable speedhack with support for Windows Media Video cutscenes on Steam Deck.
+**A custom Proton compatibility tool for Steam Deck that lets you toggle faster game speed with a button press, with added support for WMV video cutscenes.** You can use it to speed up gameplay and supported cutscenes, then switch back to normal speed.
 
-**Tested successfully on Steam Deck:** the repository owner verified working gameplay, WMV cutscenes, and the speedhack in **Fatal Frame / Project Zero: Maiden of Black Water**. Automated 32-bit and 64-bit media-decoding and speed-switching tests also passed.
+This is based on **[Proton SpeedHack by LtSquigs](https://github.com/LtSquigs/Proton-SpeedHack)**, which provides the speedhack functionality. I used its **8.0-5** release as the base and added WMV playback components from **[GE-Proton8-16 by GloriousEggroll](https://github.com/GloriousEggroll/proton-ge-custom/releases/tag/GE-Proton8-16)**. Full credit to those projects for the original work.
 
-The added support is not specific to Fatal Frame. It may also help other games with WMV cutscene playback issues, such as **Nights of Azure 2**, and other Koei Tecmo/Gust titles. Nights of Azure 2 is a potential use case, not yet a confirmed test of this build; compatibility depends on each game's playback implementation.
+I put this together because I wanted the speedhack and working prerendered cutscenes in the same Proton build. **I've tested it on my Steam Deck with Fatal Frame / Project Zero: Maiden of Black Water, and gameplay, WMV cutscenes, and the speedhack are working.**
+
+It may also help other games with WMV playback issues, such as **Nights of Azure 2** and other Koei Tecmo/Gust titles. I haven't tested Nights of Azure 2 with this build yet, but the added codec support isn't specific to Fatal Frame.
 
 **[Download the latest release](https://github.com/sevansup/Proton-SpeedHack8-WMV/releases/latest)** — no local Linux build tools or Docker setup required.
 
@@ -33,7 +35,7 @@ Every original runtime file, symlink, and file mode is checked during assembly. 
 
 ## Testing
 
-- **Steam Deck game test:** the repository owner verified Fatal Frame / Project Zero: Maiden of Black Water running with working cutscenes and speedhack.
+- **Steam Deck game test:** I verified working gameplay, cutscenes, and the speedhack in Fatal Frame / Project Zero: Maiden of Black Water on my Steam Deck.
 - **Game video sample:** all 2,028 frames of a 1920×1080 WMV3 Main-profile video decoded through SpeedHack's original GStreamer libraries with these additions.
 - **32-bit and 64-bit media tests:** complete ASF/WMV3 video decoding and WMA2 audio decoding using a checksum-pinned public sample.
 - **32-bit and 64-bit speed tests:** verified 1× → 3× → 1× Wine timing.
